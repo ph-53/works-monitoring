@@ -77,7 +77,7 @@
         return;
       }
 
-      fetch("https://script.google.com/macros/s/AKfycbyp-iBTOaYR2G0VyGs9HxQRWNA2Mbvw-SaEOHwAlu0TbvKpSizyMJ3kSYYRXjL4lE1Fzw/exec" + encodeURIComponent(station))
+      fetch("https://script.google.com/macros/s/AKfycbyp-iBTOaYR2G0VyGs9HxQRWNA2Mbvw-SaEOHwAlu0TbvKpSizyMJ3kSYYRXjL4lE1Fzw/exec?station=" + encodeURIComponent(station))
         .then(res => res.json())
         .then(data => {
           const table = document.getElementById("table");
