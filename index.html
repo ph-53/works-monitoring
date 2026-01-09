@@ -2,64 +2,18 @@
 <html>
 <head>
   <title>Station Works Lookup</title>
-
   <style>
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      padding: 20px;
-    }
-
-    /* HEADER STYLES */
-    .header {
-      text-align: center;
-      margin-bottom: 20px;
-      padding-bottom: 10px;
-      border-bottom: 2px solid #444;
-    }
-
-    .header .dept {
-      font-size: 22px;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-    }
-
-    .header .org {
-      font-size: 16px;
-      font-weight: 500;
-      letter-spacing: 1.2px;
-    }
-
-    /* TABLE STYLES */
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      margin-top: 15px;
-    }
-
-    th, td {
-      border: 1px solid #999;
-      padding: 8px;
-      text-align: left;
-    }
-
-    th {
-      background-color: #f0f0f0;
-    }
+    body { font-family: Arial; padding: 20px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 15px; }
+    th, td { border: 1px solid #999; padding: 8px; text-align: left; }
+    th { background: #f0f0f0; }
   </style>
 </head>
+<body>
 
-  <!-- HEADER BLOCK -->
-  <div class="header">
-    <div class="dept">Commercial Department</div>
-    <div class="org">Nagpur Division, Central Railway</div>
-  </div>
+  <h2>Station-wise Works</h2>
 
-  <!-- PAGE CONTENT -->
-  <h3>Station-wise Works</h3>
-
- <input id="station" list="stations" placeholder="Enter Station Name">
-<datalist id="stations"></datalist>
-
+  <input id="station" placeholder="Enter Station Name">
   <button onclick="loadData()">Go</button>
 
   <table id="table" style="display:none;">
@@ -69,65 +23,51 @@
     <tbody id="rows"></tbody>
   </table>
 
-  <script>
-  const API_URL = "YOUR_WEB_APP_URL";
-
-  // Load station list once
-  fetch(API_URL + "?stations=1")
-    .then(res => res.json())
-    .then(stations => {
-      const list = document.getElementById("stations");
-      stations.forEach(s => {
-        const option = document.createElement("option");
-        option.value = s;
-        list.appendChild(option);
-      });
-    });
-
-    function loadData() {
-      const station = document.getElementById("station").value.trim();
-      if (!station) {
-        alert("Enter station name");
-        return;
-      }
-
-      fetch("https://script.google.com/macros/s/AKfycbyp-iBTOaYR2G0VyGs9HxQRWNA2Mbvw-SaEOHwAlu0TbvKpSizyMJ3kSYYRXjL4lE1Fzw/exec?station=" + encodeURIComponent(station))
-        .then(res => res.json())
-        .then(data => {
-          const table = document.getElementById("table");
-          const headers = document.getElementById("headers");
-          const rows = document.getElementById("rows");
-
-          headers.innerHTML = "";
-          rows.innerHTML = "";
-
-          if (data.length === 0) {
-            alert("No data found");
-            table.style.display = "none";
-            return;
-          }
-
-          Object.keys(data[0]).forEach(key => {
-            const th = document.createElement("th");
-            th.textContent = key;
-            headers.appendChild(th);
-          });
-
-          data.forEach(row => {
-            const tr = document.createElement("tr");
-            Object.values(row).forEach(val => {
-              const td = document.createElement("td");
-              td.textContent = val;
-              tr.appendChild(td);
-            });
-            rows.appendChild(tr);
-          });
-
-          table.style.display = "table";
-        })
-        .catch(() => alert("Error loading data"));
+<script>
+  function loadData() {
+    const station = document.getElementById("station").value.trim();
+    if (!station) {
+      alert("Enter station name");
+      return;
     }
-  </script>
-</body>
 
+    fetch("https://script.google.com/macros/s/AKfycbyp-iBTOaYR2G0VyGs9HxQRWNA2Mbvw-SaEOHwAlu0TbvKpSizyMJ3kSYYRXjL4lE1Fzw/exec?station=" + encodeURIComponent(station))
+      .then(res => res.json())
+      .then(data => {
+        const table = document.getElementById("table");
+        const headers = document.getElementById("headers");
+        const rows = document.getElementById("rows");
+
+        headers.innerHTML = "";
+        rows.innerHTML = "";
+
+        if (data.length === 0) {
+          alert("No data found");
+          table.style.display = "none";
+          return;
+        }
+
+        Object.keys(data[0]).forEach(key => {
+          const th = document.createElement("th");
+          th.textContent = key;
+          headers.appendChild(th);
+        });
+
+        data.forEach(row => {
+          const tr = document.createElement("tr");
+          Object.values(row).forEach(val => {
+            const td = document.createElement("td");
+            td.textContent = val;
+            tr.appendChild(td);
+          });
+          rows.appendChild(tr);
+        });
+
+        table.style.display = "table";
+      })
+      .catch(() => alert("Error loading data"));
+  }
+</script>
+
+</body>
 </html>
